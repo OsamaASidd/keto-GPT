@@ -8,7 +8,27 @@ import { Message } from "ai"
 
 import Bubble from "./components/Bubble"
 import LoadingBubble from "./components/LoadingBubble"
-import PromptSuggestionRow from "./components/PromptSujjestionRow"
+
+
+const PromptSuggestionRow = (onPromptClick) => {
+    const prompts = 
+    [
+        "What are the benefits of Keto Diet?",
+        "What are the side effects of Keto Diet?",
+        "What are the best foods for Keto Diet?",
+        "What are some easy Keto Diet recipes?",
+    ]
+    return(
+        <div className="prompt-suggestion-row">
+              {prompts.map((prompt, index) =>
+             <button className="prompt-suggestion-button" onClick={() => onPromptClick(prompt)} key={`suggestion-${index}`} >
+             {prompt}
+            </button>
+             )}    
+              
+        </div>
+    )
+}
 
 
 const Home = () => {
@@ -19,7 +39,7 @@ const Home = () => {
     const noMessages = !messages || messages.length === 0
 
 
-    const handlePrompt = ( promptText ) => {
+    const handlePrompt = ( promptText: string ) => {
         const msg: Message= {
             id : crypto.randomUUID(),
             content: promptText,
@@ -42,7 +62,7 @@ const Home = () => {
                             We hope you enjoy !
                         </p>
                         <br/>
-                        <PromptSuggestionRow onPromptClick={handlePrompt}/>
+                        {PromptSuggestionRow(handlePrompt)}
                         </>
                     ) : (
                         <>

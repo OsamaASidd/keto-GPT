@@ -14,7 +14,7 @@ export default Bubble
 function formatAssistantResponse(rawResponse) {
     const lines = rawResponse.split('\n');
 
-    let formattedContent = [];
+    const  formattedContent = [];
     let listType = null; 
 
     lines.forEach(line => {
@@ -53,9 +53,7 @@ function formatAssistantResponse(rawResponse) {
         formattedContent.push(listType === 'ul' ? '</ul>' : '</ol>');
     }
 
-    let result = formattedContent.join('');
+    const  result = formattedContent.join('');
 
-    result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-    return result;
+    return result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');;
 }

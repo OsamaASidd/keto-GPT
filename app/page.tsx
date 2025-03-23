@@ -71,12 +71,11 @@ const Home = () => {
                         </>
                     )
                 }
+            </section>
             <form onSubmit={ handleSubmit }>
                 <input className="question-box" onChange={handleInputChange} value={input} placeholder="Ask me anything about keto!"/>
                 <input type= "submit"/>
             </form>
-            </section>
-
         </main>
     )
 }

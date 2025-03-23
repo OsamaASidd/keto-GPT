@@ -35,10 +35,9 @@ section.populated {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
+    justify-content: flex-start; /* Changed to flex-start to start from the top */
+    overflow: auto; /* Enables scrolling */
 }
-
 .starter-text{
     padding: 0 80px;
 }

@@ -49,7 +49,7 @@ function formatAssistantResponse(rawResponse) {
                 const match = line.match(/nutrition\?dish=([^"]+)/);
                 if (match) {
                     const dishName = match[1];
-                    line = line.replace('Click here to see nutrition score', `<a href="http://localhost:3000/nutrition?dish=${dishName}" target="_blank">Click here to see nutrition score</a>`);
+                    line = line.replace('Click here to see nutrition score', `<a href="(https://keto-gpt-1.vercel.app/nutrition?dish=${dishName}" target="_blank">Click here to see nutrition score</a>`);
                 } else {
                     // Handle the case where the URL part is missing or malformed
                     line = line.replace('Click here to see nutrition score', `Click here to see nutrition score`);
@@ -65,7 +65,7 @@ function formatAssistantResponse(rawResponse) {
     let result = formattedContent.join('');
 
     // Remove all content within parentheses that contains a URL, along with the parentheses
-    result = result.replace(/\(\s*http:\/\/localhost:3000\/nutrition\?dish=[^\)]+\s*\)/g, "");
+    result = result.replace(/\(\s*https:\/\/keto-gpt-1.vercel.app\/nutrition\?dish=[^\)]+\s*\)/g, "");
 
     return result;
 }

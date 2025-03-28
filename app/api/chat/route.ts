@@ -67,7 +67,7 @@ export async function POST(req: Request){
                    (replace DISH_NAME with the actual dish name, properly URL-encoded).
                 4. Explain that on that page, they can see a full breakdown of ingredient scores and overall nutritional quality.
                 
-                For example, if someone asks about chapli kabab, include a link like this: "[Click here to see nutrition score](http://localhost:3000/nutrition?dish=Chapli%20Kabab)".
+                For example, if someone asks about chapli kabab, include a link like this: "[Click here to see nutrition score](https://keto-gpt-1.vercel.app/nutrition?dish=Chapli%20Kabab)".
                 
                 When users ask about nutrition scores in general, explain that our website uses a nutrition scoring system similar to the German Nutri-Score, which rates foods from A to E:
                 - A: Excellent nutritional quality (high in nutrients, low in unhealthy components)

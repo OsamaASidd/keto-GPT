@@ -13,7 +13,6 @@ export default Bubble
 
 function formatAssistantResponse(rawResponse) {
     const lines = rawResponse.split('\n');
-
     const formattedContent = [];
     let listType = null;
 
@@ -46,13 +45,13 @@ function formatAssistantResponse(rawResponse) {
             }
             // Special handling for embedded hyperlink with dynamic dish name
             if (line.includes('Click here to see nutrition score')) {
-                const match = line.match(/nutrition\?dish=([^"]+)/);
+                const match = line.match(/nutrition\?dish=([^")]+)/); // Updated regex to exclude quotes and parentheses
                 if (match) {
-                    const dishName = match[1];
-                    line = line.replace('Click here to see nutrition score', `<a href="(https://keto-gpt-1.vercel.app/nutrition?dish=${dishName}" target="_blank">Click here to see nutrition score</a>`);
-                } else {
-                    // Handle the case where the URL part is missing or malformed
-                    line = line.replace('Click here to see nutrition score', `Click here to see nutrition score`);
+                    const dishName = match[1].trim();
+                    line = line.replace(
+                        'Click here to see nutrition score', 
+                        `<a href="/nutrition?dish=${encodeURIComponent(dishName)}">Click here to see nutrition score</a>`
+                    );
                 }
             }
             formattedContent.push(`<p>${line}</p>`);
@@ -64,8 +63,11 @@ function formatAssistantResponse(rawResponse) {
     }
     let result = formattedContent.join('');
 
-    // Remove all content within parentheses that contains a URL, along with the parentheses
-    result = result.replace(/\(\s*https:\/\/keto-gpt-1.vercel.app\/nutrition\?dish=[^\)]+\s*\)/g, "");
+    // Remove all content within parentheses that contains nutrition URLs
+    result = result.replace(
+        /\(\s*(?:https?:\/\/keto-gpt-1\.vercel\.app|http:\/\/localhost:3000)\/nutrition\?dish=[^)]+\s*\)/g, 
+        ""
+    );
 
     return result;
 }

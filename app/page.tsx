@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import logo from "./assets/logo.png"
+import Link from "next/link"
 
 import { useChat } from "ai/react"
 import { Message } from "ai"
@@ -17,6 +18,7 @@ const PromptSuggestionRow = (onPromptClick) => {
         "What are the side effects of Keto Diet?",
         "What are the best foods for Keto Diet?",
         "What are some easy Keto Diet recipes?",
+        "Tell me about nutrition scores for keto foods"
     ]
     return(
         <div className="prompt-suggestion-row">
@@ -51,7 +53,14 @@ const Home = () => {
     
     return (
         <main>
-            <Image src={logo} width="250" alt= "Food Logo"/>
+            <div className="header-container">
+                <Image src={logo} width="250" alt= "Food Logo"/>
+                {/* <nav className="main-nav">
+                    <Link href="/nutrition" className="nav-link">
+                        View Nutrition Scores
+                    </Link>
+                </nav> */}
+            </div>
             <section className = {noMessages ? "" : "populated" }>
                 {
                     noMessages ? (

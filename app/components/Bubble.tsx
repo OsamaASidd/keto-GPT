@@ -14,12 +14,13 @@ export default Bubble
 function formatAssistantResponse(rawResponse) {
     const lines = rawResponse.split('\n');
 
-    const  formattedContent = [];
-    let listType = null; 
+    const formattedContent = [];
+    let listType = null;
 
     lines.forEach(line => {
         line = line.trim();
 
+        // Handle list items
         if (line.startsWith('- ') || line.startsWith('* ')) {
             if (listType !== 'ul') {
                 if (listType) {
@@ -29,8 +30,7 @@ function formatAssistantResponse(rawResponse) {
                 listType = 'ul';
             }
             formattedContent.push(`<li>${line.slice(2)}</li>`);
-        }
-        else if (/^\d+\. /.test(line)) {
+        } else if (/^\d+\. /.test(line)) {
             if (listType !== 'ol') {
                 if (listType) {
                     formattedContent.push('</ul>');
@@ -39,11 +39,21 @@ function formatAssistantResponse(rawResponse) {
                 listType = 'ol';
             }
             formattedContent.push(`<li>${line.slice(line.indexOf(' ') + 1)}</li>`);
-        }
-        else if (line) {
+        } else if (line) {
             if (listType) {
                 formattedContent.push(listType === 'ul' ? '</ul>' : '</ol>');
                 listType = null;
+            }
+            // Special handling for embedded hyperlink with dynamic dish name
+            if (line.includes('Click here to see nutrition score')) {
+                const match = line.match(/nutrition\?dish=([^"]+)/);
+                if (match) {
+                    const dishName = match[1];
+                    line = line.replace('Click here to see nutrition score', `<a href="http://localhost:3000/nutrition?dish=${dishName}" target="_blank">Click here to see nutrition score</a>`);
+                } else {
+                    // Handle the case where the URL part is missing or malformed
+                    line = line.replace('Click here to see nutrition score', `Click here to see nutrition score`);
+                }
             }
             formattedContent.push(`<p>${line}</p>`);
         }
@@ -52,8 +62,10 @@ function formatAssistantResponse(rawResponse) {
     if (listType) {
         formattedContent.push(listType === 'ul' ? '</ul>' : '</ol>');
     }
+    let result = formattedContent.join('');
 
-    const  result = formattedContent.join('');
+    // Remove all content within parentheses that contains a URL, along with the parentheses
+    result = result.replace(/\(\s*http:\/\/localhost:3000\/nutrition\?dish=[^\)]+\s*\)/g, "");
 
-    return result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');;
+    return result;
 }

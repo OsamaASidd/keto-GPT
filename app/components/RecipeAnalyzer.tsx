@@ -237,18 +237,17 @@ const getFallbackRecipe = (dishName) => {
     ingredients: ["beef", "salt", "onions", "garlic", "oil"]
   };
 };
-
 // Main component
 const RecipeAnalyzer = ({ dishName }) => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     async function getRecipe() {
       setLoading(true);
       setError(null);
-      
+
       try {
         const recipeData = await fetchRecipeFromAI(dishName);
         if (recipeData && recipeData.ingredients && Array.isArray(recipeData.ingredients)) {
@@ -267,42 +266,42 @@ const RecipeAnalyzer = ({ dishName }) => {
         setLoading(false);
       }
     }
-    
+
     getRecipe();
   }, [dishName]);
-  
+
   if (loading) {
     return <div className="loading">Analyzing recipe for {dishName}...</div>;
   }
-  
+
   if (!recipe) {
     return (
       <div className="recipe-not-found">
         <h2>Recipe Not Found</h2>
-        <p>We couldn't find nutritional information for "{dishName}". Try another dish or browse our general nutrition scores.</p>
+        <p>We couldn&apos;t find nutritional information for &quot;{dishName}&quot;. Try another dish or browse our general nutrition scores.</p>
       </div>
     );
   }
-  
+
   const overallScore = calculateOverallScore(recipe.ingredients);
-  
+
   return (
     <div className="recipe-analyzer">
       <h2>{recipe.name} Nutrition Analysis</h2>
       {error && <div className="recipe-warning">{error}</div>}
       <p className="recipe-description">{recipe.description}</p>
-      
+
       <div className="overall-score-container">
         <h3>Overall Nutrition Score:</h3>
         <div className="overall-score">
           <NutritionScore score={overallScore} />
           <p className="score-explanation">
-            This score represents the average nutritional quality of all ingredients, 
+            This score represents the average nutritional quality of all ingredients,
             not just how keto-friendly the dish is.
           </p>
         </div>
       </div>
-      
+
       <h3>Ingredient Analysis:</h3>
       <div className="ingredients-list">
         {recipe.ingredients.map((ingredient, index) => (
@@ -318,7 +317,7 @@ const RecipeAnalyzer = ({ dishName }) => {
           </div>
         ))}
       </div>
-      
+
       <div className="keto-tips">
         <h3>Keto Considerations:</h3>
         <p>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from "next/image";
 import logo from "../assets/logo.png";
@@ -10,7 +10,7 @@ import NutritionScore from "../components/NutritionScore";
 import ketoFoodData from "../components/ketoFoodsData";
 import RecipeAnalyzer from "../components/RecipeAnalyzer";
 
-export default function NutritionPage() {
+function NutritionPageContent() {
     const [filterScore, setFilterScore] = useState('');
     const searchParams = useSearchParams();
     const dishParam = searchParams.get('dish');
@@ -75,5 +75,13 @@ export default function NutritionPage() {
                 </>
             )}
         </main>
+    );
+}
+
+export default function NutritionPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <NutritionPageContent />
+        </Suspense>
     );
 }
